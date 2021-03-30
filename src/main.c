@@ -19,13 +19,17 @@
 #include <stdio.h>
 #include "debugFun.h"
 
+// main function 
 int
 main(int argc, char* argv[])
 {
+    // print the program label
     printf("My first git repo\n");
+    // print the binary name
     printf("\nProgram name: %s\n",argv[0]);
 
+    // calling the debug functionw with argument
     debugPrint("from debug fun");
 
-    return(0);
+    return(0); // return from the main
 }

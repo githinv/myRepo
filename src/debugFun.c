@@ -10,14 +10,24 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:   (),
+ *         Author:   (githinv.in@gmail.com),
  *   Organization:
  *
  * =====================================================================================
  */
 
+/* 
+// define the debug function
+// function: it will print the debug message
+//
+// arg: actual message to print
+//
+// retur: none
+*/
+
 void
 debugPrint (char* debugMessage)
 {
+    // print the message with debug label
     printf("Debug > "%s\n");
 }
