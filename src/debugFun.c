@@ -19,5 +19,5 @@
 void
 debugPrint (char* debugMessage)
 {
-    printf("Debug > "%s\n");
+    printf("Debug > %s\n");
 }

@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include "debugFun.h"
 
+void loclPrif (char* message);
+
 int
 main(int argc, char* argv[])
 {
@@ -26,6 +28,12 @@ main(int argc, char* argv[])
     printf("\nProgram name: %s\n",argv[0]);
 
     debugPrint("from debug fun");
+    localPrint("from local debug");
 
     return(0);
 }
+
+void localPrint (char* message){
+    printf("Debug_L > %s\n", message);
+}
+
