@@ -30,6 +30,13 @@ main(int argc, char* argv[])
 
     // calling the debug functionw with argument
     debugPrint("from debug fun");
+    displayLcl("hello");
 
     return(0); // return from the main
+}
+
+void 
+disPlayLcl (char* data)
+{
+	printf("Debug_LC %s", data);
 }
