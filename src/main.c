@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include "debugFun.h"
 
+void displayLcl (char* data);
+
 // main function 
 int
 main(int argc, char* argv[])
@@ -36,7 +38,7 @@ main(int argc, char* argv[])
 }
 
 void 
-disPlayLcl (char* data)
+displayLcl (char* data)
 {
 	printf("Debug_LC %s", data);
 }
