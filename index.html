@@ -1,185 +1,717 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Finance Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional Profile - Githin V</title>
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
 
-  <!-- PapaParse -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+    (function() {
+      const storedTheme = localStorage.getItem('theme');
+  
+      if (storedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body::before {
+      content: '';
+      position: fixed;
+      top: -100px;
+      left: -100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #4f46e5, #3b82f6);
+      opacity: 0.2;
+      border-radius: 50%;
+      z-index: -1;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -100px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #f43f5e, #fbbf24);
+      opacity: 0.2;
+      border-radius: 50%;
+      z-index: -1;
+    }
+    .frosted {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255,255,255,0.1);
+    }
+    .dark .frosted { background-color: rgba(0,0,0,0.3); }
+    .skill-card { transition: transform .2s ease, border-color .2s ease; }
+    .skill-card:hover { transform: translateY(-2px); border-color: #6366f1; }
+
+
+    /* Print / PDF styles */
+    @page {
+      size: A4 portrait;
+      margin: 7mm;
+    }
+
+    @media print {
+      html,
+      body {
+        background: #ffffff !important;
+        color: #1f2937 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        font-size: 11px !important;
+      }
+
+      .no-print,
+      #darkModeToggle,
+      #savePdfBtn,
+      #themeSwitch,
+      label[for="darkModeToggle"] {
+        display: none !important;
+      }
+
+      body::before,
+      body::after {
+        display: none !important;
+      }
+
+      .frosted {
+        background: #ffffff !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: 1px solid #e5e7eb !important;
+      }
+
+      .dark .frosted,
+      .dark body,
+      .dark body * {
+        background-color: #ffffff !important;
+        color: #1f2937 !important;
+      }
+
+      .dark .text-gray-500,
+      .dark .text-gray-400,
+      .dark .text-gray-600,
+      .dark .text-gray-300 {
+        color: #4b5563 !important;
+      }
+
+      .dark .bg-gray-900,
+      .dark .bg-gray-800,
+      .dark .bg-gray-700 {
+        background: #ffffff !important;
+      }
+
+      a {
+        color: #4f46e5 !important;
+        text-decoration: none !important;
+      }
+
+      * {
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
+      }
+
+      /* A4 content width, while retaining the desktop-style two-column layout. */
+      .max-w-5xl {
+        width: 100% !important;
+        max-width: none !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Compact vertical rhythm so the complete portfolio fits in two A4 pages. */
+      .max-w-5xl.mx-auto {
+        padding: 12px !important;
+        margin-top: 10px !important;
+        border-radius: 10px !important;
+      }
+
+      /* Hero */
+      body > .text-center {
+        padding-top: 18px !important;
+        padding-bottom: 12px !important;
+      }
+
+      .text-6xl,
+      .md\\:text-7xl {
+        font-size: 42px !important;
+        line-height: 1 !important;
+      }
+
+      .text-xl,
+      .md\\:text-2xl {
+        font-size: 16px !important;
+        line-height: 1.35 !important;
+      }
+
+      /* Profile remains horizontal, like the desktop page. */
+      #profile {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+      }
+
+      #profile > div:first-child {
+        width: 105px !important;
+        height: 105px !important;
+        flex: 0 0 105px !important;
+      }
+
+      #profile > div:last-child {
+        margin-left: 16px !important;
+        margin-top: 0 !important;
+      }
+
+      #profile p {
+        line-height: 1.35 !important;
+      }
+
+      #profile .mt-4 {
+        margin-top: 7px !important;
+      }
+
+      #profile .mt-6 {
+        margin-top: 9px !important;
+      }
+
+      /* Section headings */
+      h2 {
+        font-size: 22px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 10px !important;
+      }
+
+      /* Professional snapshot */
+      #profile + .max-w-5xl {
+        margin-top: 10px !important;
+      }
+
+      #profile + .max-w-5xl .grid {
+        /* Keep all four snapshot cards on one row, matching the web layout. */
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 7px !important;
+      }
+
+      #profile + .max-w-5xl .p-4 {
+        padding: 9px !important;
+      }
+
+      #profile + .max-w-5xl .text-2xl {
+        font-size: 15px !important;
+        white-space: nowrap !important;
+      }
+
+      #profile + .max-w-5xl .text-sm {
+        font-size: 9px !important;
+        line-height: 1.2 !important;
+      }
+
+      /* Prevent gradient heading rendering artifacts in the PDF. */
+      #experience + .max-w-5xl h2 {
+        color: #1f2937 !important;
+        -webkit-text-fill-color: #1f2937 !important;
+        background: none !important;
+        background-image: none !important;
+        text-decoration: none !important;
+        border-bottom: none !important;
+      }
+
+      /* Skills retain the desktop two-column arrangement. */
+      #skills {
+        margin-top: 10px !important;
+      }
+
+      #skills > p {
+        margin-bottom: 9px !important;
+      }
+
+      #skills > div:last-child {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 7px !important;
+      }
+
+      #skills .skill-card {
+        padding: 10px !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      #skills .skill-card h3 {
+        font-size: 12px !important;
+      }
+
+      #skills .skill-card p {
+        margin-top: 4px !important;
+        font-size: 10px !important;
+        line-height: 1.3 !important;
+      }
+
+      #skills .md\\:col-span-2 {
+        grid-column: span 2 / span 2 !important;
+      }
+
+      /* Start experience on page 2 for a clean two-page document. */
+      #experience {
+        break-before: page !important;
+        page-break-before: always !important;
+        margin-top: 0 !important;
+      }
+
+      #experience ul {
+        margin-top: 0 !important;
+      }
+
+      #experience li {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      #experience li + li {
+        margin-top: 13px !important;
+      }
+
+      #experience h3 {
+        font-size: 15px !important;
+        line-height: 1.2 !important;
+      }
+
+      #experience p {
+        line-height: 1.32 !important;
+      }
+
+      #experience .mt-2 {
+        margin-top: 4px !important;
+      }
+
+      /* Education and QR/contact are compact on page 2. */
+      #experience + .max-w-5xl,
+      #contact {
+        margin-top: 10px !important;
+      }
+
+      #contact {
+        margin-bottom: 0 !important;
+      }
+
+      #qrcode canvas,
+      #qrcode img {
+        width: 105px !important;
+        height: 105px !important;
+      }
+
+      #contact .p-4 {
+        padding: 9px !important;
+      }
+
+      #contact .mt-4 {
+        margin-top: 7px !important;
+      }
+    }
+  </style>
 </head>
-<body>
-  <div class="container py-4 position-relative">
 
-    <!-- Dark/Light Mode Switch -->
-    <div class="form-check form-switch position-absolute top-0 end-0 mt-3 me-3">
-      <input class="form-check-input" type="checkbox" id="darkModeSwitch" onchange="toggleDarkMode()">
-      <label class="form-check-label" for="darkModeSwitch">Dark Mode</label>
-    </div>
+<body class="bg-gray-100 dark:bg-gray-900 font-sans text-gray-800 dark:text-gray-200 transition-colors duration-500">
 
-    <h2 class="text-center mb-4">📊 Personal Finance Dashboard</h2>
-	
-	<!-- Sample CSV Data Card -->
-	<div class="card mb-4 shadow-sm border-info sample-csv-card" style="background-color: #e3f2fd;">
-	  <div class="card-body">
-		<h6 class="card-title text-info">📄 Sample CSV Format</h6>
-		<p class="card-text mb-2"><strong>CSV Header:</strong> Date,-,Description,Spend,Credit,Balance,Category</p>
-		<p class="card-text"><strong>Sample Row:</strong> 21-01-2024,-,UPI/P2M/402163328292/BharatPe /Verifi/YesBank_Yespay,80, ,1100.73,Petrol</p>
-	  </div>
-	</div>
-	
-	<!-- Upload Section -->
-	<div class="card shadow-sm p-3 mb-4" style="background-color: #f8d7da;"> <!-- light blue -->
-	  <div class="card-body text-center">
-		<!-- <input type="file" id="csvFile" accept=".csv" class="form-control mb-3"> -->
-		<input type="file" id="csvFile" accept=".csv" 
-			class="form-control mb-3"
-			style="background-color: #e9f5ff; border: 1px solid #cce7ff; border-radius: 0.5rem; padding: 0.4rem 0.75rem; color: #333;">
-		<button class="btn btn-primary" onclick="loadCSV()">Upload & Analyze</button>
-	  </div>
-	</div>
+  <!-- Top Bar -->
+  <div class="flex justify-end px-5 pt-5 md:px-6 md:pt-6">
+    <label
+      for="darkModeToggle"
+      title="Toggle light / dark theme"
+      aria-label="Toggle light / dark theme"
+      class="inline-flex items-center cursor-pointer select-none"
+    >
+      <input type="checkbox" id="darkModeToggle" class="sr-only" />
 
-    <!-- Filter Section -->
-    <div class="card shadow-sm p-3 mb-4">
-      <div class="card-body text-center row g-2 align-items-center">
-        <div class="col-md-4">
-          <input type="date" id="startDate" class="form-control" placeholder="Start Date">
-        </div>
-        <div class="col-md-4">
-          <input type="date" id="endDate" class="form-control" placeholder="End Date">
-        </div>
-		<div class="col-md-4 d-flex gap-2">
-		  <button class="btn btn-secondary flex-grow-1" onclick="filterByDate()">Filter</button>
-		  <button class="btn btn-outline-secondary flex-grow-1" onclick="resetFilter()">Reset</button>
-		</div>
+      <span
+        id="themeSwitch"
+        class="relative flex items-center w-7 h-4 rounded-full
+               bg-gray-300 dark:bg-gray-700
+               border border-gray-300 dark:border-gray-600
+               shadow-sm transition-all duration-300"
+      >
+        <span class="absolute left-[2px] top-[2px] w-[12px] h-[12px]
+                     rounded-full bg-white shadow-sm
+                     flex items-center justify-center
+                     transition-transform duration-300"
+              id="toggleKnob">
+          <span id="themeIcon" class="text-[7px] leading-none">☀</span>
+        </span>
+      </span>
+    </label>
+  </div>
+
+  <!-- PDF / Print Button -->
+  <div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 no-print">
+    <button
+      id="savePdfBtn"
+      type="button"
+      onclick="saveAsPDF()"
+      title="Save portfolio as PDF"
+      aria-label="Save portfolio as PDF"
+      class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full
+             bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold
+             shadow-md transition-all duration-200"
+    >
+      <span aria-hidden="true" class="text-xs leading-none"></span>
+      <span>Save PDF</span>
+    </button>
+  </div>
+
+  <!-- Hero -->
+  <div class="text-center py-12 md:py-16">
+    <p class="text-sm uppercase tracking-[0.25em] text-indigo-500 font-semibold mb-3">
+      Embedded Systems Specialist · Solution Architect
+    </p>
+    <h1 class="text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600">
+      GITHIN V
+    </h1>
+    <p class="mt-4 text-xl md:text-2xl text-gray-600 dark:text-gray-300">
+      Embedded Product Design &amp; Platform Architecture · <strong>17+ Years</strong>
+    </p>
+  </div>
+
+  <!-- Profile -->
+  <div id="profile" class="max-w-5xl mx-auto p-6 frosted rounded-2xl shadow-xl flex flex-col md:flex-row items-center md:items-start">
+    <div class="w-40 h-40 rounded-full p-1 bg-gradient-to-r from-blue-500 to-indigo-600 shadow-md shrink-0">
+      <div class="w-full h-full rounded-full overflow-hidden bg-white dark:bg-gray-800">
+        <img src="githinv.png" alt="Githin V Profile Photo" class="w-full h-full object-cover" />
       </div>
     </div>
 
-    <!-- Summary Cards -->
-    <div class="row mb-4" id="summary">
-      <div class="col-md-4">
-        <div class="card text-white bg-success shadow-sm">
-          <div class="card-body">
-            <h5>Total Income</h5>
-            <h3 id="totalIncome">₹0</h3>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card text-white bg-danger shadow-sm">
-          <div class="card-body">
-            <h5>Total Spend</h5>
-            <h3 id="totalSpend">₹0</h3>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card text-white bg-info shadow-sm">
-          <div class="card-body">
-            <h5>Net Balance</h5>
-            <h3 id="netBalance">₹0</h3>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="md:ml-8 mt-6 md:mt-0 flex-1">
+      <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+        Experienced embedded systems professional with <strong>17+ years of expertise</strong> in
+        Embedded Product Design, Firmware/HAL Development and embedded Linux-based systems,
+        spanning Broadband Gateways, Set-Top Boxes and small-footprint MCUs.
+        Strong background in system integration, hardware design, bootloaders, wireless technologies,
+        performance optimization and secure embedded development.
+      </p>
 
-    <!-- Charts Section -->
-    <div class="card shadow-sm p-3 chart-card-1 mb-4">
-      <h5>Income vs Spending Over Time</h5>
-      <canvas id="lineChart"></canvas>
-    </div>
+      <p class="mt-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+        <strong>Embedded Systems Architect & SME</strong> specialize in designing end-to-end connected products, optimizing low-level firmware 
+		and hardware performance, and building high-reliability embedded platforms.
+      </p>
 
-	<!-- Net Income Bar Chart Section -->
-	<div class="card shadow-sm p-3 mb-4 net-bar-card">
-	  <h5>Monthly Net (Income - Spend)</h5>
-	  <canvas id="netBarChart"></canvas>
-	</div>
-
-	<!-- 🔹 New Credit Bar Chart Section -->
-    <div class="card shadow-sm p-3 mb-4 credit-bar-card">
-      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-        <h5 class="mb-2">Credit Details</h5>
-        <div class="d-flex gap-2">
-		  <div id="totalCreditBox" class="total-box">₹0</div>
-          <select id="categoryFilterCredit" class="form-select w-auto" onchange="updateCreditBarChart()">
-            <option value="all">Categories</option>
-          </select>
-          <select id="timeViewCredit" class="form-select w-auto" onchange="updateCreditBarChart()">
-            <option value="monthly">Monthly</option>
-            <option value="weekly">Weekly</option>
-          </select>
-        </div>
-      </div>
-      <canvas id="creditBarChart"></canvas>
-    </div>
-
-    <div class="card shadow-sm p-3 chart-pie-container mb-4">
-      <h5>Spending by Category</h5>
-      <div class="pie-wrapper">
-        <canvas id="pieChart"></canvas>
+      <div class="mt-6 grid sm:grid-cols-2 gap-2 text-sm">
+        <p><strong>🔗 LinkedIn:</strong>
+          <a href="https://www.linkedin.com/in/githinv" target="_blank" rel="noopener noreferrer"
+             class="text-indigo-500 hover:underline">linkedin.com/in/githinv</a>
+        </p>
+        <p><strong>📧 Email:</strong>
+          <a href="mailto:githinv@gmail.com" class="text-indigo-500 hover:underline">githinv@gmail.com</a>
+        </p>
+        <p><strong>📞 Phone:</strong> +91 9986613510</p>
+        <p><strong>📍 Location:</strong> Ernakulam, Kerala</p>
       </div>
     </div>
+  </div>
 
-    <!-- 🔹 New Bar Chart Section -->
-    <div class="card shadow-sm p-3 mb-4 bar-chart-card">
-      <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
-        <h5 class="mb-2">Spend Details</h5>
-        <div class="d-flex gap-2">
-		  <div id="totalSpendBox" class="total-box">₹0</div>
-          <select id="categoryFilterBar" class="form-select w-auto" onchange="updateBarChart()">
-            <option value="all">Categories</option>
-          </select>
-          <select id="timeView" class="form-select w-auto" onchange="updateBarChart()">
-            <option value="monthly">Monthly</option>
-            <option value="weekly">Weekly</option>
-          </select>
-        </div>
-      </div>
-      <canvas id="barChart"></canvas>
-    </div>
+  <!-- Professional Snapshot -->
+  <div class="max-w-5xl mx-auto p-6 mt-8 frosted rounded-2xl shadow-xl">
+    <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 mb-5">
+      Professional Snapshot
+    </h2>
 
-    <!-- Transactions Table -->
-    <div class="card shadow-sm p-3 mb-4">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h5 class="mb-0">Transactions</h5>
-        <div class="d-flex gap-1">
-          <button class="btn btn-sm btn-outline-secondary" onclick="toggleColumn('Credit')">C</button>
-          <button class="btn btn-sm btn-outline-secondary" onclick="toggleColumn('Balance')">B</button>
-        </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="p-4 rounded-xl bg-white/10 border border-white/10">
+        <div class="text-2xl font-bold">10+ Years</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Embedded Product Design</div>
       </div>
-    
-      <div class="transactions-wrapper">
-        <table class="table table-striped" id="transactionsTable">
-          <thead class="table-dark">
-            <tr>
-              <th>Date</th>
-              <th>Description</th>
-              <th>Spend</th>
-              <th>Credit</th>
-              <th>Balance</th>
-              <th>Category</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div class="p-4 rounded-xl bg-white/10 border border-white/10">
+        <div class="text-2xl font-bold">7+ Years</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Gateway &amp; Set Top Box</div>
+      </div>
+      <div class="p-4 rounded-xl bg-white/10 border border-white/10">
+        <div class="text-2xl font-bold">Embedded Linux</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Platform Experience</div>
+      </div>
+      <div class="p-4 rounded-xl bg-white/10 border border-white/10">
+        <div class="text-2xl font-bold">SME / Architect</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">Career Direction</div>
       </div>
     </div>
+  </div>
 
-    <!-- 🔹 Footer -->
-    <footer class="fintrack-footer text-center">
-      FinTrack Version-1 &nbsp;@&nbsp; vgithin@gmail.com
-    </footer>
+  <!-- Technology Stack / Skills -->
+  <div id="skills" class="max-w-5xl mx-auto p-6 mt-8 frosted rounded-2xl shadow-xl">
+    <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 mb-2">
+      Technology Stack &amp; Skills
+    </h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+      Technology and engineering areas reflected directly in the current resume.
+    </p>
 
-  <!-- Custom JS -->
-  <script src="script.js"></script>
+    <div class="grid md:grid-cols-2 gap-4">
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5">
+        <h3 class="font-semibold text-indigo-500">Embedded &amp; Systems</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          Embedded C, C++, GNU-GCC, Assembly, Python, Bash/Scripting, firmware development,
+          device drivers, HAL development, porting, debugging, testing and bug fixing.
+        </p>
+      </div>
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5">
+        <h3 class="font-semibold text-indigo-500">Linux, RTOS &amp; Build Systems</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          Linux, Embedded Linux, Raspbian, FreeRTOS, uClinux, AOSP, Yocto
+          (Daisy, Morty, Thud, Dunfell, Kirkstone), Buildroot and Broadcom SDK.
+        </p>
+      </div>
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5">
+        <h3 class="font-semibold text-indigo-500">RDK &amp; Platform</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          RDK-B, RDK-V, RDK-E, STB and CPE platform integration, Yocto migration,
+          platform migration, system integration and performance optimization.
+        </p>
+      </div>
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5">
+        <h3 class="font-semibold text-indigo-500">Bootloaders &amp; Recovery</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          U-Boot, GRUB, Microkernel, Little Kernel, CFE, boot flow, image validation,
+          recovery images, disaster management, OTA and A/B / dual-bank strategies.
+        </p>
+      </div>
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5">
+        <h3 class="font-semibold text-indigo-500">Processors &amp; MCUs</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          ARM (NXP, XMC, STM32, Atmel, Broadcom, Amlogic, Realtek), MIPS, DSP,
+          XC866, AT89S52/C51, AVR 8/16/32-bit and PIC 8/16/32-bit.
+        </p>
+      </div>
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5">
+        <h3 class="font-semibold text-indigo-500">Connectivity &amp; Protocols</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          Wi-Fi / 802.11, Bluetooth Classic, BLE, Zigbee, LoRaWAN, NFC, IRDA, GSM/GPRS,
+          UART, SPI, I²C, I³C, I²S, CAN, RS232/485 and Modbus RTU/ASCII.
+        </p>
+      </div>
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5">
+        <h3 class="font-semibold text-indigo-500">Hardware &amp; EDA / CAD</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          PCB design, schematic capture, footprint creation, Altium, Cadence, KiCad, Eagle,
+          Proteus, NI Multisim, SPICE, FreeCAD and hardware bring-up.
+        </p>
+      </div>
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5">
+        <h3 class="font-semibold text-indigo-500">Debug, Networking &amp; Security</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          GDB, JTAG, Wireshark, Iperf, Wi-Fi/BLE analyzers, logic/CAN analyzers,
+          hci/gatttool, binary-level security analysis, secure coding and vulnerability remediation.
+        </p>
+      </div>
+
+      <div class="skill-card p-5 rounded-xl border border-gray-200/20 bg-white/5 md:col-span-2">
+        <h3 class="font-semibold text-indigo-500">Engineering &amp; Collaboration</h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+          GitHub, GitLab, Gerrit, SVN, Jira, TinyPM, OpenProject, code reviews, technical documentation,
+          customer workshops, technical presentations, project leadership, team mentoring and cross-functional integration.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Experience -->
+  <div id="experience" class="max-w-5xl mx-auto p-6 mt-8 frosted rounded-2xl shadow-xl">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-5">
+      <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600">
+        Experience
+      </h2>
+    </div>
+
+    <ul class="space-y-8">
+
+      <li>
+        <h3 class="text-xl font-semibold">Embedded Architect</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          <span class="text-base font-bold text-gray-800 dark:text-gray-200">TATA Elxsi Limited</span>
+          | Sep 2017 - Present
+        </p>
+        <p class="mt-2 text-gray-700 dark:text-gray-300">
+          🟠 Designing innovative solutions for new products and driving platform-level enhancements across STB and CPE, 
+          while working with technologies including RDK, Buildroot, Yocto, Linux Kernel, Bootloader, Filesystems, Wi-Fi, Bluetooth, Networking, 
+          and leading a team of engineers. Ensuring high customer satisfaction through data-driven product improvement and 
+          resolving critical field issues. Delivering robust, high-quality solutions across both offshore and onsite development, 
+          with a focus on ramping up teams for long-term success.
+        </p>
+      </li>
+
+      <li>
+        <h3 class="text-xl font-semibold">Project Lead - Embedded Electronics (R&amp;D)</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          <span class="text-base font-bold text-gray-800 dark:text-gray-200">ASAIES Automation Pvt. Ltd.</span>
+          | Aug 2015 - Sep 2017
+        </p>
+        <p class="mt-2 text-gray-700 dark:text-gray-300">
+          🟡 Designing and developing embedded products for NEWS Printing Industries, Heavy Electrical, and General-purpose applications, 
+          including motor drivers, redistribution systems, waveguides, and Embedded Linux systems. Developing Firmware for 8-bit and 32-bit MCUs 
+          using UART, SPI, USB, and Modbus, and managing testing, validation, and multiple teams. Handling the full product lifecycle from 
+          schematic capture and CAD design to board bring-up and production, delivering reliable, high-quality solutions.
+        </p>
+      </li>
+
+      <li>
+        <h3 class="text-xl font-semibold">Sr. Embedded System Design Engineer</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          <span class="text-base font-bold text-gray-800 dark:text-gray-200">Falcon Electro-Tek Pvt Ltd</span>
+          | Jul 2012 - Aug 2015
+        </p>
+        <p class="mt-2 text-gray-700 dark:text-gray-300">
+          🟢 Embedded software and firmware development on PIC, AVR, and ARMv7 using Keil µVision and IAR, with expertise in RTOS/bare-metal 
+          optimization and hardware abstraction. Skilled in hardware design with OrCAD/Altium, peripheral drivers (UART, SPI, I2C, GPIO, ADC), 
+          and wireless protocols (Zigbee, Bluetooth, Wi-Fi, NFC). Strong in system bring-up, HAL testing, compliance validation, 
+          and cost-effective, high-quality product delivery.
+        </p>
+      </li>
+
+      <li>
+        <h3 class="text-xl font-semibold">Research Fellow</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          <span class="text-base font-bold text-gray-800 dark:text-gray-200">National Institute of Oceanography</span>
+          | Feb 2011 - Mar 2012
+        </p>
+        <p class="mt-2 text-gray-700 dark:text-gray-300">
+          🔵 Designing and implementing Embedded Linux, ARM, and 8051-based environmental data acquisition systems (Autonomous Weather Stations, 
+          Tide Gauges, and Radar Level Sensor), with expertise in hardware/software optimization, field deployment, and maintenance of 
+          autonomous weather stations and sensors
+        </p>
+      </li>
+
+      <li>
+        <h3 class="text-xl font-semibold">Project Coordinator</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          <span class="text-base font-bold text-gray-800 dark:text-gray-200">EL-Tech Industries Pvt. Ltd.</span>
+          | Jun 2009 - Sep 2010
+        </p>
+        <p class="mt-2 text-gray-700 dark:text-gray-300">
+          🟣 Managing production workflows with expertise in troubleshooting power electronic drivers, logic boards, and synchronization of 
+          electronic ballasts, while contributing to automated product design/programming and supporting technicians in system maintenance.
+        </p>
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- Education -->
+  <div class="max-w-5xl mx-auto p-6 mt-8 frosted rounded-2xl shadow-xl">
+    <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 mb-5">
+      Education
+    </h2>
+
+    <div class="space-y-1">
+      <div>
+	    <p class="text-sm text-gray-500 dark:text-gray-400">
+          <span class="text-base font-bold text-gray-800 dark:text-gray-200">Master of Science — Electronics </span>
+           | 2006 - 2008
+        </p>
+      </div>
+      <div>
+	  	<p class="text-sm text-gray-500 dark:text-gray-400">
+          <span class="text-base font-bold text-gray-800 dark:text-gray-200">Bachelor of Science — Electronics with Computer Hardware </span>
+           | 2002 - 2006
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Code -->
+  <div id="contact" class="max-w-5xl mx-auto p-6 mt-8 mb-10 frosted rounded-2xl shadow-xl flex flex-col items-center">
+    <div class="p-4 bg-white rounded-xl shadow-md flex items-center justify-center">
+      <div id="qrcode"></div>
+    </div>
+    <p class="mt-4 text-gray-600 dark:text-gray-400 text-sm">Scan to save my contact details</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:Githin V
+TEL:+91-9947828026
+TEL:+91-9986613510
+EMAIL:githinv@gmail.com
+ORG:Tata Elxsi Limited
+ADR:;;Ernakulam;Kerala;;India
+URL:https://www.linkedin.com/in/githinv
+END:VCARD`;
+
+      new QRCode(document.getElementById('qrcode'), {
+        text: vCard,
+        width: 150,
+        height: 150,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      const toggle = document.getElementById('darkModeToggle');
+      const knob = document.getElementById('toggleKnob');
+      const icon = document.getElementById('themeIcon');
+      const isDark = document.documentElement.classList.contains('dark');
+
+      function updateThemeSwitch(dark) {
+        toggle.checked = dark;
+        knob.style.transform = dark ? 'translateX(12px)' : 'translateX(0)';
+        icon.textContent = dark ? '☾' : '☀';
+      }
+
+      updateThemeSwitch(isDark);
+
+      toggle.addEventListener('change', () => {
+        const newTheme = toggle.checked ? 'dark' : 'light';
+        document.documentElement.classList.toggle('dark', newTheme === 'dark');
+        localStorage.setItem('theme', newTheme);
+        updateThemeSwitch(newTheme === 'dark');
+      });
+    });
+  </script>
+
+  <script>
+    function saveAsPDF() {
+      const root = document.documentElement;
+      const wasDark = root.classList.contains('dark');
+
+      // Always generate the PDF in light theme.
+      root.classList.remove('dark');
+
+      // Wait for the light theme to be rendered before opening the print dialog.
+      setTimeout(() => {
+        window.print();
+
+        // Restore the user's original theme after the print dialog closes.
+        setTimeout(() => {
+          if (wasDark) {
+            root.classList.add('dark');
+          }
+        }, 300);
+      }, 100);
+    }
+  </script>
+
 </body>
 </html>
